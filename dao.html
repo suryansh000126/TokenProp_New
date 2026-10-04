@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAO Governance — TokenProp</title>
+  <meta name="description" content="Participate in decentralized governance. Vote on property proposals using Proof-of-Involvement weighted scoring.">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/dao.css">
+  <link rel="stylesheet" href="css/kyc.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-brand"><span class="brand-icon">🏛️</span> TokenProp</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="dao.html" class="active">Governance</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="learn.html">Learn</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="kyc-badge kyc-badge--unverified" onclick="openKYCModal()">
+          <span class="kyc-badge-dot"></span> Verify KYC
+        </div>
+        <button class="nav-wallet" id="wallet-btn" onclick="connectWallet()"><span class="wallet-dot"></span> Connect Wallet</button>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dao-page">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="dao-header">
+        <h1>DAO <span class="text-gradient-gold">Governance</span></h1>
+        <p>Shape property decisions through community voting. Your voice matters — weighted by Proof-of-Involvement, not just wealth.</p>
+      </div>
+
+      <!-- Layout -->
+      <div class="dao-layout">
+
+        <!-- Proposals -->
+        <div class="proposals-section">
+          <div class="proposals-header">
+            <h2>Proposals</h2>
+            <div class="proposals-tabs">
+              <button class="active" data-tab="active">Active</button>
+              <button data-tab="passed">Passed</button>
+              <button data-tab="rejected">Rejected</button>
+              <button data-tab="all">All</button>
+            </div>
+          </div>
+          <div id="proposals-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="dao-sidebar">
+          <!-- POI Score -->
+          <div class="poi-card glass-card">
+            <h3>Your <span class="text-gradient-gold">POI Score</span></h3>
+            <p class="poi-subtitle">Proof-of-Involvement determines your governance weight</p>
+
+            <div class="poi-score-display">
+              <div class="poi-ring">
+                <svg viewBox="0 0 140 140">
+                  <defs>
+                    <linearGradient id="poiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#F5A623"/>
+                      <stop offset="100%" style="stop-color:#00D4A1"/>
+                    </linearGradient>
+                  </defs>
+                  <circle class="ring-bg" cx="70" cy="70" r="65"/>
+                  <circle class="ring-fill" cx="70" cy="70" r="65"/>
+                </svg>
+                <div class="poi-score-num" id="poi-score-num">0</div>
+              </div>
+              <div class="poi-score-label">out of 100</div>
+            </div>
+
+            <div class="poi-breakdown" id="poi-breakdown"></div>
+
+            <div class="poi-comparison">
+              <h4>Your Influence vs. Pure Financial Weight</h4>
+              <div class="comparison-row">
+                <span class="comparison-label">🗳️ Governance Weight</span>
+                <span class="comparison-value" id="gov-weight" style="color:var(--accent-gold)">0%</span>
+              </div>
+              <div class="comparison-row">
+                <span class="comparison-label">💰 Financial Weight</span>
+                <span class="comparison-value" id="fin-weight" style="color:var(--text-muted)">0%</span>
+              </div>
+            </div>
+
+            <div class="poi-formula">
+              <h4>📐 POI Formula</h4>
+              <code>
+                POI = (Ownership × 0.40) + (Activity × 0.35) + (Duration × 0.25)
+              </code>
+            </div>
+          </div>
+
+          <!-- DAO Stats -->
+          <div class="dao-stats-card glass-card">
+            <h3>DAO Statistics</h3>
+            <div id="dao-stats-body"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Vote Toast -->
+  <div class="vote-toast" id="vote-toast">
+    <span class="toast-icon">✅</span>
+    <span class="toast-text">Vote submitted</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand"><span class="brand-icon">🏛️</span> TokenProp</div>
+          <p>Democratizing real estate investment through blockchain tokenization and community governance.</p>
+        </div>
+        <div class="footer-col"><h4>Platform</h4><a href="marketplace.html">Marketplace</a><a href="dao.html">Governance</a><a href="dashboard.html">Dashboard</a></div>
+        <div class="footer-col"><h4>Resources</h4><a href="#">Documentation</a><a href="#">Smart Contracts</a><a href="#">Whitepaper</a></div>
+        <div class="footer-col"><h4>Community</h4><a href="#">Discord</a><a href="#">Twitter / X</a><a href="#">Telegram</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 TokenProp. All rights reserved.</span>
+        <div class="footer-socials"><a href="#">𝕏</a><a href="#">💬</a><a href="#">🐙</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- KYC Modal -->
+  <div class="kyc-modal-overlay" id="kyc-modal-overlay">
+    <div class="kyc-modal">
+      <div class="kyc-modal-head">
+        <div class="kyc-modal-title-row">
+          <div class="kyc-modal-title">
+            <div class="kyc-modal-title-icon">🏛️</div>
+            <div>
+              <h2>Aadhaar KYC</h2>
+              <div class="kyc-modal-subtitle">Secure Off-chain Verification</div>
+            </div>
+          </div>
+          <button class="kyc-close-btn" onclick="closeKYCModal()">&times;</button>
+        </div>
+        <div class="kyc-steps-indicator"><div class="kyc-step-dot active">1</div><div class="kyc-step-line"></div><div class="kyc-step-dot">2</div><div class="kyc-step-line"></div><div class="kyc-step-dot">3</div></div>
+      </div>
+      <div class="kyc-modal-body">
+        <div class="kyc-step-panel active" id="kyc-step-1">
+          <div class="kyc-wallet-info"><span class="wallet-label">Connected:</span><span class="wallet-addr" id="kyc-wallet-addr">—</span></div>
+          <div class="kyc-aadhaar-group"><label>12-Digit Aadhaar Number</label><input type="text" class="kyc-aadhaar-input" id="kyc-aadhaar" placeholder="XXXX XXXX XXXX" maxlength="14" autocomplete="off"><div class="kyc-input-error" id="kyc-aadhaar-error"></div></div>
+          <div class="kyc-email-group"><label>Email Address (Optional)</label><input type="email" class="kyc-email-input" id="kyc-email" placeholder="you@example.com"></div>
+          <button class="kyc-action-btn kyc-action-btn--send" id="kyc-send-btn" onclick="sendKYCOTP()" disabled>📩 Send OTP</button>
+        </div>
+        <div class="kyc-step-panel" id="kyc-step-2">
+          <div class="kyc-otp-info" id="kyc-otp-info">OTP sent</div>
+          <div class="kyc-otp-container" id="kyc-otp-inputs">
+            <input type="text" class="kyc-otp-digit" maxlength="1"><input type="text" class="kyc-otp-digit" maxlength="1"><input type="text" class="kyc-otp-digit" maxlength="1">
+            <input type="text" class="kyc-otp-digit" maxlength="1"><input type="text" class="kyc-otp-digit" maxlength="1"><input type="text" class="kyc-otp-digit" maxlength="1">
+          </div>
+          <div class="kyc-resend-row"><button class="kyc-resend-btn" id="kyc-resend-btn" onclick="resendOTP()" disabled>Resend <span id="kyc-resend-timer"></span></button></div>
+          <button class="kyc-action-btn kyc-action-btn--verify" id="kyc-verify-btn" onclick="verifyKYCOTP()" disabled>✅ Verify & Whitelist</button>
+        </div>
+        <div class="kyc-step-panel" id="kyc-step-3">
+          <div class="kyc-success"><div class="kyc-success-icon">✓</div><h3>Identity Verified!</h3><p id="kyc-success-msg">Your wallet has been whitelisted on Polygon.</p><a href="#" class="kyc-tx-link" id="kyc-tx-hash" target="_blank">0x...</a><button class="kyc-success-done-btn" onclick="closeKYCModal()">Continue</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+  <script src="js/web3.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/kyc.js"></script>
+  <script src="js/dao.js"></script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TokenProp</title>
+  <meta name="description" content="View your portfolio, token holdings, governance score, and activity.">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/kyc.css">
+  <link rel="stylesheet" href="css/futuristic-theme.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-brand"><span class="brand-icon">🏛️</span> TokenProp</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="dao.html">Governance</a></li>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="transparency.html">Transparency</a></li>
+        <li><a href="learn.html">Learn</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-wallet" id="wallet-btn" onclick="connectWallet()"><span class="wallet-dot"></span> 0x71C7...3aF9</button>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-page">
+    <div class="container">
+      <div class="dashboard-header">
+        <h1 class="dash-greeting">Welcome back, <span class="text-gradient-green">Suryansh</span> 👋</h1>
+        <p class="dash-sub">Here's your tokenized real estate portfolio overview</p>
+      </div>
+
+      <div class="portfolio-overview">
+        <div class="overview-card glass-card">
+          <div class="ov-label">Portfolio Value</div>
+          <div class="ov-value" id="ov-total-value">$0</div>
+          <span class="ov-change positive" id="ov-gain">+0%</span>
+        </div>
+        <div class="overview-card glass-card">
+          <div class="ov-label">Total Tokens</div>
+          <div class="ov-value" id="ov-total-tokens">0</div>
+          <span class="ov-change positive"><span id="ov-properties">0</span> properties</span>
+        </div>
+        <div class="overview-card glass-card">
+          <div class="ov-label">Monthly Income</div>
+          <div class="ov-value" id="ov-monthly">$0</div>
+          <span class="ov-change positive" id="ov-monthly-change">+0%</span>
+        </div>
+        <div class="overview-card glass-card">
+          <div class="ov-label">POI Score</div>
+          <div class="ov-value" id="ov-poi">0/100</div>
+          <span class="ov-change positive" id="ov-rank">—</span>
+        </div>
+        <div class="overview-card cyber-card" style="border-color: rgba(0, 255, 136, 0.4); background: rgba(0, 255, 136, 0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="ov-label" style="color: var(--neon-emerald); font-weight: 700;">Live Streaming Rent</div>
+            <span class="pulse-beacon pulse-beacon--green"></span>
+          </div>
+          <div class="ov-value" id="dash-stream-val" style="color: var(--neon-emerald); font-family: monospace; font-size: 1.8rem;">0.04821040 POL</div>
+          <button class="btn btn-primary" style="margin-top: 8px; width: 100%; padding: 6px 12px; font-size: 0.8rem;" onclick="alert('Claim submitted to RentDistributor.sol! Auto-TDS already remitted.')">Claim Now</button>
+        </div>
+
+        <div class="overview-card cyber-card" id="kyc-verify-card" style="border-color: rgba(0, 240, 255, 0.4);">
+          <div class="kyc-card-header">
+            <div class="kyc-card-icon">🛡️</div>
+            <div>
+              <h3 style="color: var(--neon-cyan);">KYC: Tier 2 (Accredited)</h3>
+              <p style="font-size: 0.8rem; color: var(--text-secondary);">ComplianceRegistry.sol Verified</p>
+            </div>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--neon-emerald); margin-top: 6px;">✓ Global Investment & DAO Voting Active</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dashboard-main">
+          <div class="chart-card glass-card">
+            <h2>Portfolio Value</h2>
+            <p class="chart-sub">Track your investment growth over time</p>
+            <div class="chart-canvas" style="position:relative">
+              <canvas id="portfolio-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- F-17 Portfolio Optimizer & What-If Simulator -->
+          <div class="cyber-card" style="padding: 28px; margin-bottom: 32px; margin-top: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h2 style="font-size: 1.5rem; margin-bottom: 4px;">🧠 Portfolio Optimiser & What-If Simulator</h2>
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">Simulate rebalancing your portfolio between properties to optimize yield & reduce risk</p>
+              </div>
+              <span class="neon-tag neon-tag--cyan">F-17 Algorithmic Engine</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 24px;">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+                  <span>Skyline Residences (NY)</span>
+                  <span id="slider-val-1" style="font-weight: 700; color: var(--neon-cyan);">50%</span>
+                </div>
+                <input type="range" class="slider-cyber" id="alloc-slider-1" min="0" max="100" value="50" oninput="runPortfolioSimulation()">
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+                  <span>Oceanview Villa (Miami)</span>
+                  <span id="slider-val-2" style="font-weight: 700; color: var(--neon-purple);">30%</span>
+                </div>
+                <input type="range" class="slider-cyber" id="alloc-slider-2" min="0" max="100" value="30" oninput="runPortfolioSimulation()">
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+                  <span>Austin Tech Campus (TX)</span>
+                  <span id="slider-val-3" style="font-weight: 700; color: var(--neon-amber);">20%</span>
+                </div>
+                <input type="range" class="slider-cyber" id="alloc-slider-3" min="0" max="100" value="20" oninput="runPortfolioSimulation()">
+              </div>
+            </div>
+
+            <!-- Simulation Output Banner -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 14px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px;">
+              <div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">EXPECTED YIELD</div>
+                <div id="sim-yield" style="font-size: 1.5rem; font-weight: 800; color: var(--neon-emerald); font-family: monospace;">8.59%</div>
+              </div>
+              <div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">RISK SCORE</div>
+                <div id="sim-risk" style="font-size: 1.5rem; font-weight: 800; color: #FFF; font-family: monospace;">23 / 100</div>
+              </div>
+              <div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">DIVERSIFICATION SCORE</div>
+                <div id="sim-div" style="font-size: 1.5rem; font-weight: 800; color: var(--neon-cyan); font-family: monospace;">82 / 100</div>
+              </div>
+              <div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">RATING</div>
+                <div id="sim-rating" style="font-size: 0.95rem; font-weight: 700; color: var(--neon-emerald); margin-top: 6px;">High Diversification ✓</div>
+              </div>
+            </div>
+            <div id="sim-rec" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 12px; font-style: italic;">
+              Optimal risk-adjusted configuration across residential and hospitality classes.
+            </div>
+          </div>
+
+          <!-- F-07 Soulbound Reputation & Achievement Badges -->
+          <div class="cyber-card" style="padding: 28px; margin-bottom: 32px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h2 style="font-size: 1.5rem; margin-bottom: 4px;">🏆 Soulbound Reputation Badges (ERC-5192)</h2>
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">Non-transferable on-chain achievements multiplying your POI governance weight</p>
+              </div>
+              <span class="neon-tag neon-tag--amber">Reputation: 140 PTS</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px;">
+              <div class="sbt-badge">
+                <div class="sbt-icon">🥇</div>
+                <div style="font-weight: 700; font-size: 0.85rem;">First Investment</div>
+                <div style="font-size: 0.72rem; color: var(--neon-emerald); margin-top: 4px;">+50 Points · Verified</div>
+              </div>
+              <div class="sbt-badge">
+                <div class="sbt-icon">💰</div>
+                <div style="font-weight: 700; font-size: 0.85rem;">Rent Collector</div>
+                <div style="font-size: 0.72rem; color: var(--neon-emerald); margin-top: 4px;">+40 Points · 12 Claims</div>
+              </div>
+              <div class="sbt-badge">
+                <div class="sbt-icon">🗳️</div>
+                <div style="font-weight: 700; font-size: 0.85rem;">Active Voter</div>
+                <div style="font-size: 0.72rem; color: var(--neon-emerald); margin-top: 4px;">+30 Points · 6 Votes</div>
+              </div>
+              <div class="sbt-badge">
+                <div class="sbt-icon">🛠️</div>
+                <div style="font-weight: 700; font-size: 0.85rem;">Bounty Builder</div>
+                <div style="font-size: 0.72rem; color: var(--neon-emerald); margin-top: 4px;">+20 Points · 1 Task</div>
+              </div>
+              <div class="sbt-badge">
+                <div class="sbt-icon">🛡️</div>
+                <div style="font-weight: 700; font-size: 0.85rem;">Insurance Guardian</div>
+                <div style="font-size: 0.72rem; color: var(--neon-purple); margin-top: 4px;">Active Q4 Coverage</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="holdings-section">
+            <h2>Your Holdings</h2>
+            <div id="holdings-list"></div>
+          </div>
+        </div>
+
+        <div class="dashboard-sidebar">
+          <div class="gov-score-card glass-card">
+            <h3>Governance Score</h3>
+            <div class="gov-mini-ring">
+              <svg viewBox="0 0 100 100">
+                <circle class="ring-bg" cx="50" cy="50" r="45"/>
+                <circle class="ring-fill" cx="50" cy="50" r="45"/>
+              </svg>
+              <div class="gov-mini-score" id="gov-score-num">0</div>
+            </div>
+            <div class="gov-score-detail">
+              <div class="gs-rank" id="gov-rank">Rank <span>#—</span> of —</div>
+            </div>
+            <div style="text-align:center;margin-top:16px">
+              <a href="dao.html" class="btn btn-secondary btn-sm">View Governance →</a>
+            </div>
+          </div>
+
+          <div class="activity-card glass-card">
+            <h3>Recent Activity</h3>
+            <div class="timeline" id="timeline-list"></div>
+          </div>
+
+          <div class="income-card glass-card">
+            <h3>Monthly Income</h3>
+            <div id="income-body"></div>
+          </div>
+
+          <!-- Insurance Alerts -->
+          <div class="activity-card glass-card" style="margin-top: 24px;">
+            <h3>🚨 Property Alerts</h3>
+            <div id="dash-insurance-alerts" style="margin-top: 16px;">
+              <div style="color:var(--text-muted);font-size:0.85rem">Loading alerts...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="nav-brand"><span class="brand-icon">🏛️</span> TokenProp</div><p>Democratizing real estate investment.</p></div>
+        <div class="footer-col"><h4>Platform</h4><a href="marketplace.html">Marketplace</a><a href="dao.html">Governance</a><a href="dashboard.html">Dashboard</a></div>
+        <div class="footer-col"><h4>Resources</h4><a href="#">Docs</a><a href="#">Whitepaper</a></div>
+        <div class="footer-col"><h4>Community</h4><a href="#">Discord</a><a href="#">Twitter</a></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 TokenProp.</span><div class="footer-socials"><a href="#">𝕏</a><a href="#">💬</a></div></div>
+    </div>
+  </footer>
+
+  <!-- KYC Modal -->
+  <div class="kyc-modal-overlay" id="kyc-modal-overlay">
+    <div class="kyc-modal">
+      <div class="kyc-modal-head">
+        <div class="kyc-modal-title-row">
+          <div class="kyc-modal-title">
+            <div class="kyc-modal-title-icon">🏛️</div>
+            <div>
+              <h2>Aadhaar KYC</h2>
+              <div class="kyc-modal-subtitle">Secure Off-chain Verification</div>
+            </div>
+          </div>
+          <button class="kyc-close-btn" onclick="closeKYCModal()">&times;</button>
+        </div>
+        <div class="kyc-steps-indicator">
+          <div class="kyc-step-dot active" id="kyc-dot-1">1</div>
+          <div class="kyc-step-line" id="kyc-line-1"></div>
+          <div class="kyc-step-dot" id="kyc-dot-2">2</div>
+          <div class="kyc-step-line" id="kyc-line-2"></div>
+          <div class="kyc-step-dot" id="kyc-dot-3">3</div>
+        </div>
+      </div>
+
+      <div class="kyc-modal-body">
+        
+        <!-- Step 1: Aadhaar Input -->
+        <div class="kyc-step-panel active" id="kyc-step-1">
+          <div class="kyc-wallet-info">
+            <span class="wallet-label">Connected:</span>
+            <span class="wallet-addr" id="kyc-wallet-addr">—</span>
+          </div>
+          <div class="kyc-aadhaar-group">
+            <label>12-Digit Aadhaar Number</label>
+            <input type="text" class="kyc-aadhaar-input" id="kyc-aadhaar" placeholder="XXXX XXXX XXXX" maxlength="14" autocomplete="off">
+            <div class="kyc-input-hint">Your Aadhaar is verified off-chain and never stored.</div>
+            <div class="kyc-input-error" id="kyc-aadhaar-error"></div>
+          </div>
+          <div class="kyc-email-group">
+            <label>Email Address (Optional)</label>
+            <input type="email" class="kyc-email-input" id="kyc-email" placeholder="you@example.com">
+            <div class="kyc-input-hint">Enter your email to receive a real OTP via Nodemailer.</div>
+          </div>
+          <button class="kyc-action-btn kyc-action-btn--send" id="kyc-send-btn" onclick="sendKYCOTP()" disabled>
+            📩 Send OTP
+          </button>
+        </div>
+
+        <!-- Step 2: OTP Input -->
+        <div class="kyc-step-panel" id="kyc-step-2">
+          <div class="kyc-otp-info" id="kyc-otp-info">
+            OTP sent to your registered mobile/email
+          </div>
+          <div class="kyc-otp-container" id="kyc-otp-inputs">
+            <input type="text" class="kyc-otp-digit" maxlength="1" autocomplete="one-time-code">
+            <input type="text" class="kyc-otp-digit" maxlength="1">
+            <input type="text" class="kyc-otp-digit" maxlength="1">
+            <input type="text" class="kyc-otp-digit" maxlength="1">
+            <input type="text" class="kyc-otp-digit" maxlength="1">
+            <input type="text" class="kyc-otp-digit" maxlength="1">
+          </div>
+          <div class="kyc-input-error" id="kyc-otp-error" style="text-align:center"></div>
+          <div class="kyc-resend-row">
+            Didn't receive it? 
+            <button class="kyc-resend-btn" id="kyc-resend-btn" onclick="resendOTP()" disabled>Resend <span id="kyc-resend-timer"></span></button>
+          </div>
+          <button class="kyc-action-btn kyc-action-btn--verify" id="kyc-verify-btn" onclick="verifyKYCOTP()" disabled>
+            ✅ Verify & Whitelist On-chain
+          </button>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div class="kyc-step-panel" id="kyc-step-3">
+          <div class="kyc-success">
+            <div class="kyc-success-icon">✓</div>
+            <h3>Identity Verified!</h3>
+            <p id="kyc-success-msg">Your wallet has been whitelisted on Polygon.</p>
+            <a href="#" class="kyc-tx-link" id="kyc-tx-hash" target="_blank">0x...</a>
+            <button class="kyc-success-done-btn" onclick="closeKYCModal()">Continue to Dashboard</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+  <script src="js/contracts-config.js"></script>
+  <script src="js/web3.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/kyc.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    // Live Streaming Rent Counter
+    let dashStreamVal = 0.04821040;
+    setInterval(() => {
+      dashStreamVal += 0.00000035;
+      const el = document.getElementById('dash-stream-val');
+      if (el) el.innerText = dashStreamVal.toFixed(8) + " POL";
+    }, 100);
+
+    // What-If Portfolio Simulation
+    async function runPortfolioSimulation() {
+      const w1 = parseInt(document.getElementById('alloc-slider-1').value) || 0;
+      const w2 = parseInt(document.getElementById('alloc-slider-2').value) || 0;
+      const w3 = parseInt(document.getElementById('alloc-slider-3').value) || 0;
+
+      document.getElementById('slider-val-1').innerText = w1 + "%";
+      document.getElementById('slider-val-2').innerText = w2 + "%";
+      document.getElementById('slider-val-3').innerText = w3 + "%";
+
+      try {
+        const res = await fetch("http://localhost:3001/api/portfolio/simulate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            allocations: [
+              { id: 1, weight: w1 },
+              { id: 2, weight: w2 },
+              { id: 3, weight: w3 }
+            ]
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const s = data.simulationSummary;
+          document.getElementById('sim-yield').innerText = s.expectedAnnualYield;
+          document.getElementById('sim-risk').innerText = s.compositeRiskScore + " / 100";
+          document.getElementById('sim-div').innerText = s.diversificationScore + " / 100";
+          document.getElementById('sim-rating').innerText = s.rating;
+          document.getElementById('sim-rec').innerText = data.recommendation;
+        }
+      } catch (err) {
+        // Local calculation fallback
+        const total = (w1 + w2 + w3) || 1;
+        const yld = ((w1 * 8.5) + (w2 * 9.2) + (w3 * 7.9)) / total;
+        document.getElementById('sim-yield').innerText = yld.toFixed(2) + "%";
+      }
+    }
+  </script>
+</body>
+</html>
